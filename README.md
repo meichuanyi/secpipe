@@ -253,6 +253,75 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
 ---
 
+## FAQ
+
+### What is SecPipe?
+
+SecPipe is an open-source MCP server that enables AI agents (GitHub Copilot, Claude, etc.) to orchestrate security research workflows through the **Model Context Protocol (MCP)**. It connects AI assistants to MCP tool hubs — containerized security tools that agents can discover, chain, and execute autonomously.
+
+### How does the Hub Architecture work?
+
+SecPipe acts as a **meta-MCP server** — a single MCP endpoint giving your AI agent access to tools from multiple MCP hub servers. Each hub is a containerized security tool (Binwalk, YARA, Radare2, Nmap, etc.).
+
+| Feature | Description |
+|---------|-------------|
+| 🔍 Discovery | Agent lists available hub servers and discovers their tools |
+| 🤖 AI-Native | Hub tools provide agent context — usage tips, workflow guidance |
+| 🔗 Composable | Chain tools from different hubs into automated pipelines |
+| 📦 Extensible | Add your own MCP servers to the hub registry |
+
+### What security tools are available?
+
+The default Security Hub includes 36+ offensive security MCP servers:
+
+- **Binwalk** — Firmware extraction and analysis
+- **YARA** — Pattern matching for malware identification
+- **Radare2** — Binary analysis and reverse engineering
+- **Nmap** — Network discovery and security scanning
+- **Nuclei** — Vulnerability scanner with templates
+- **Cargo Fuzzer** — Rust fuzzing with coverage guidance
+
+### How do I use SecPipe with an AI agent?
+
+Add to your MCP client configuration:
+
+```json
+{
+  "mcpServers": {
+    "secpipe": {
+      "command": "uvx",
+      "args": ["secpipe-mcp"]
+    }
+  }
+}
+```
+
+Then ask your agent questions like:
+
+```
+"What security tools are available?"
+"Scan this firmware image for vulnerabilities"
+"Analyze this binary with radare2"
+```
+
+### What are example use cases?
+
+| Use Case | Pipeline |
+|----------|----------|
+| Firmware Vulnerability Research | Binwalk → YARA → Radare2 → Report |
+| Rust Fuzzing Pipeline | Rust Analyzer → Harness Gen → Cargo Fuzzer → Crash Analysis |
+
+### What license applies?
+
+BSL 1.1 — See [LICENSE](LICENSE) for details.
+
+### How can I contribute?
+
+- 🐛 Report bugs via [GitHub Issues](../../issues)
+- 💡 Suggest features or improvements
+- 🔧 Submit pull requests
+- 🔌 Add new MCP servers to the [Security Hub](https://github.com/FuzzingLabs/mcp-security-hub)
+
 ## 📄 License
 
 BSL 1.1 - See [LICENSE](LICENSE) for details.
